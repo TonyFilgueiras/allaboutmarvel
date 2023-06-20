@@ -1,25 +1,33 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { ThemeProvider } from 'styled-components';
+import HomeView from './views/HomeView';
+import NotFoundView from './views/NotFoundView';
+import Header from './components/Header';
+
+
+const theme = {
+  colors: {
+    red: "#e23636",
+    gray: "#504a4a",
+    black: "#222",
+    cyan: "#518cca",
+    orange: "#f78f3f"
+  }
+}
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <BrowserRouter>
+        <Header/>
+          <Routes>
+            <Route path="/" element={<HomeView/>} />
+            <Route path="*" element={<NotFoundView />} />
+          </Routes>
+
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }
 
