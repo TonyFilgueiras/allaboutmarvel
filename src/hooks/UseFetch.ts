@@ -1,33 +1,37 @@
 import React from 'react'
+import {api} from "../api"
+import { AxiosResponse } from 'axios'
+import { DataContainer, MarvelData } from '../typescript/interfaces'
 
 export default function useFetch() {
-    const [data, setData] = React.useState<any>()
     const [error, setError] = React.useState<string>()
     const [loading, setLoading] = React.useState<boolean>(false)
 
-
-    const request  = React.useCallback(async (url: URL, options: RequestInit | undefined) => {
-        let response;
-        let json
+    const request  = React.useCallback(async (url: string) => { 
+        let response: AxiosResponse<MarvelData>;
+        let data: DataContainer | undefined
         try { 
             setError('')
             setLoading(true)
-            response = await fetch(url, options)
-            json = await response.json()
-            if (response.ok === false) throw new Error (json.message)
+            response = await api.get(url)
+            data = response.data.data
+            if (response.data.code < 200 || response.data.code >= 300) {
+                console.log(response.data.status)
+                console.log(response.data.code)
+                setError(response.data.status)
+                throw new Error(response.data.status)
+            }
         } catch (err:unknown) {
-            json = null
             if (err instanceof Error) {
                 setError(err.message)
             }
         } finally {
-            setData(json)
             setLoading(false)
-            return {response, json}
+            return (data)
         }
     }, [])
 
   return {
-    data, loading, error, request
+    loading, error, request
   }
 }

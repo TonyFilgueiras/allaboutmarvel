@@ -1,15 +1,18 @@
 import React from 'react'
 import styled from 'styled-components'
 import marvel_logo from "../img/marvel_logo.png"
+import { Link } from 'react-router-dom'
 
 
 const StyledHeader = styled.header`
-    background: ${props => props.theme.colors.black};
+    background: ${({theme})=> theme.colors.black};
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 20px;
     box-shadow: 0 1px 10px 0px #00000081;
+    font-family: ${({ theme }) => theme.fonts.containers};
+    font-weight: bold;
 
 `
 const Styledul = styled.ul`
@@ -25,18 +28,31 @@ const Styledli = styled.li`
         background-color: ${props => props.theme.colors.red};
         box-shadow: 0 1px 10px 0px #00000081;
     }
+    &:active{
+        transform: scale(0.9);
+    }
 `
 const MarvelLogo = styled.img`
     width: 100px;
+    transition: all.2s;
+
+    &:hover{
+        cursor: pointer;
+        transform: scale(1.1);
+    }
 `
 
 export default function Header() {
   return (
       <StyledHeader>
-          <MarvelLogo src={ marvel_logo } />
+          <Link to="/">
+              <MarvelLogo src={ marvel_logo } />
+          </Link>
           <nav>
               <Styledul>
-                  <Styledli>Characters</Styledli>
+                  <Link to="/characters">
+                    <Styledli>Characters</Styledli>
+                  </Link>
                   <Styledli>Creators</Styledli>
                   <Styledli>Comics</Styledli>
                   <Styledli>Events</Styledli>
