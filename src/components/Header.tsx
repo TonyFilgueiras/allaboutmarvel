@@ -53,11 +53,21 @@ export default function Header() {
                   <Link to="/characters">
                     <Styledli>Characters</Styledli>
                   </Link>
-                  <Styledli>Creators</Styledli>
-                  <Styledli>Comics</Styledli>
-                  <Styledli>Events</Styledli>
-                  <Styledli>Series</Styledli>
-                  <Styledli>Stories</Styledli>
+                  <Link to="/creators">
+                    <Styledli>Creators</Styledli>
+                  </Link>
+                  <Link to="/comics">
+                    <Styledli>Comics</Styledli>
+                  </Link>
+                  <Link to="/events">
+                    <Styledli>Events</Styledli>
+                  </Link>
+                  <Link to="/series">
+                    <Styledli>Series</Styledli>
+                  </Link>
+                  <Link to="/stories">
+                    <Styledli>Stories</Styledli>  
+                  </Link>
             </Styledul>
           </nav>
       </StyledHeader>

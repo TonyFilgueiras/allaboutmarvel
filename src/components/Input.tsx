@@ -4,6 +4,7 @@ import styled from 'styled-components'
 type Props = {
     placeholder: string,
     type: string,
+    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const StyledInput = styled.input`
@@ -11,8 +12,8 @@ const StyledInput = styled.input`
   width: calc(100% - 40px);
 `
 
-export default function Input({placeholder, type}: Props) {
+export default function Input({placeholder, type, ...props}: Props) {
   return (
-    <StyledInput type={type} placeholder={placeholder}/>
+    <StyledInput type={type} placeholder={placeholder} {...props}/>
   )
 }

@@ -1,6 +1,21 @@
 import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
+  ::-webkit-scrollbar {
+    width: 8px;
+    background-color: ${({theme})=> theme.colors.black};
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background-color: ${({theme})=> theme.colors.red};
+    border-radius: 4px;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: ${({theme})=> theme.colors.orange};
+  }
   body {
     margin: 0 auto;
     padding: 0;

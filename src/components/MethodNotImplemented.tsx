@@ -4,10 +4,6 @@ import { MousePosition } from '../typescript/interfaces/appInterfaces'
 import Fadein from '../styles/Fadein'
 import MethodNotImplementedContext from '../contexts/MethodNotImplementedContext'
 
-type Props = {
-    isOpened: boolean,
-    mousePosition: MousePosition,
-}
 
 const Styleddiv = styled.div<{ $isOpened?: boolean, $popUpPosition?: MousePosition }>`
     background-color: ${({ theme }) => theme.colors.red};
@@ -28,8 +24,8 @@ const Styleddiv = styled.div<{ $isOpened?: boolean, $popUpPosition?: MousePositi
     transition: all 2.2s;
     `
 
-export default function MethodNotImplemented({isOpened, mousePosition }: Props) {
-  const { isOpen } = React.useContext(MethodNotImplementedContext)
+export default function MethodNotImplemented() {
+  const { isOpen, mousePosition } = React.useContext(MethodNotImplementedContext)
   return (
     <Styleddiv $isOpened={isOpen} $popUpPosition={mousePosition}>Method Not Implemented</Styleddiv>
   )

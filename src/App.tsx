@@ -9,12 +9,9 @@ import { theme } from './styles/Theme';
 import GlobalStyle from './styles/GlobalStyle';
 import Footer from './components/Footer';
 import MethodNotImplemented from './components/MethodNotImplemented';
-import MethodNotImplementedContext from './contexts/MethodNotImplementedContext';
 
 
 function App() {
-  const { isOpen, mousePosition } = React.useContext(MethodNotImplementedContext)
-
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle/>
@@ -27,7 +24,7 @@ function App() {
           </Routes>
       <Footer/>
       </BrowserRouter>
-      <MethodNotImplemented isOpened={ isOpen } mousePosition={mousePosition} />
+      <MethodNotImplemented/>
     </ThemeProvider>
   );
 }
