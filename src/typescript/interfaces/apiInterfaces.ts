@@ -1,4 +1,4 @@
-import { Lists, Summaries, Image, TextObject, Urls } from './types'
+import { Lists, Summaries, Image, TextObject, Urls } from '../types'
 
 export interface MarvelData {
     code: number,

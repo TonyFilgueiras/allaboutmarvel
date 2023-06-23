@@ -8,9 +8,13 @@ import CharactersView from './views/CharactersView';
 import { theme } from './styles/Theme';
 import GlobalStyle from './styles/GlobalStyle';
 import Footer from './components/Footer';
+import MethodNotImplemented from './components/MethodNotImplemented';
+import MethodNotImplementedContext from './contexts/MethodNotImplementedContext';
 
 
 function App() {
+  const { isOpen, mousePosition } = React.useContext(MethodNotImplementedContext)
+
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle/>
@@ -18,11 +22,12 @@ function App() {
         <Header/>
           <Routes>
             <Route path="/" element={<HomeView/>} />
-            <Route path="/characters" element={<CharactersView/>} />
+            <Route path="/characters" element={<CharactersView/>}/>
             <Route path="*" element={<NotFoundView />} />
           </Routes>
       <Footer/>
       </BrowserRouter>
+      <MethodNotImplemented isOpened={ isOpen } mousePosition={mousePosition} />
     </ThemeProvider>
   );
 }
