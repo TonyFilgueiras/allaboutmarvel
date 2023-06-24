@@ -9,6 +9,8 @@ import AspectRatioIcon from '@mui/icons-material/AspectRatio';
 // import PopUpMenu from '../components/PopUpMenu'
 import MethodNotImplementedContext from '../contexts/MethodNotImplementedContext'
 import Loading from '../components/Loading'
+import CardsContainer from '../components/CardsContainer'
+import Cards from '../components/Cards'
 
 
 const ViewContainer = styled.div`
@@ -21,32 +23,6 @@ const Title = styled.h1`
   ${BaseTitle};
 `
 
-const GridContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(6, minmax(50px, 1fr));
-  grid-gap: 5px;
-  /* justify-content: space-between; */
-  margin-bottom: 20px;
-  /* border: 1px solid lime; */
-  `
-const CharactersContainers = styled.div`
-  display: flex;
-  flex-direction: column;
-  &:hover img{
-    border: 3px inset red;
-  } &:hover{
-    cursor: pointer;
-  }
-  
-  `
-const CharactersImg = styled.img`
-  margin: 0 auto;
-  /* height: 50px;
-  width: 50px; */
-  border-radius: 10px;
-  border: 3px solid transparent;
-  transition: all.2s;
-`
 const OptionsContainer = styled.ul`
   display: flex;
   justify-content: end;
@@ -94,29 +70,28 @@ export default function CharactersView() {
   const [characters, setCharacters] = React.useState<Characters[]>()
   const [apiOffset, setApiOffset] = React.useState(0)
   const [searchTerm, setSearchTerm] = React.useState('')
+  const [searched, setSearched] = React.useState(false)
   const [typingText, setTypingText] = React.useState('')
-  const [typing, setTyping] = React.useState(false)
+  const [isTyping, setIsTyping] = React.useState(false)
   // const [isSortMenuOpened, setIsSortMenuOpened] = React.useState(false)
   // const [isAspectRatioOpened, setIsAspectRatioOpened] = React.useState(false)
 
     React.useEffect(() => {
       async function fetchCharacters(offset?: number, name?: string) {
-        console.log('consultando como quem n quer nada kkkk se fode ae seu cuzao')
-
         if (name) {
           setApiOffset(0)
+          setSearched(true)
           const data = await request("/characters", apiOffset, name)
           setCharacters(data?.results)
         } else {
           const data = await request("/characters", offset, name)
-          if (!characters) {
+          if (!characters || searched) {
+            setSearched(false)
             setCharacters(data?.results)
           } else {
             setCharacters((chrt)=> chrt!.concat(data?.results))
           }
-          
         }
-
       }  
       
       console.log(characters)  
@@ -138,7 +113,7 @@ export default function CharactersView() {
         const documentHeight = document.documentElement.scrollHeight;
 
         // Check if scrolled to the bottom
-        if (scrollTop + windowHeight >= documentHeight) {
+        if (scrollTop + windowHeight >= documentHeight && !searchTerm && !loading) {
           setApiOffset(apiOffset + 100)
           console.log(apiOffset)
           console.log('Scrolled to the bottom');
@@ -152,12 +127,12 @@ export default function CharactersView() {
       return () => {
         window.removeEventListener('scroll', handleScroll);
       };
-    }, [apiOffset]);
+    }, [apiOffset, searchTerm]);
   
   React.useEffect(() => {
-      setTyping(true)
+      setIsTyping(true)
       const typingTimer = setTimeout(() => {
-        setTyping(false)
+        setIsTyping(false)
         setSearchTerm(typingText)
       }, 2500)
       
@@ -214,15 +189,10 @@ export default function CharactersView() {
         </OptionItem>
 
       </OptionsContainer>
-      <GridContainer>
-        {characters && characters.map((character) => (
-          <CharactersContainers key={character.id}>
-            <CharactersImg src={ `${character.thumbnail?.path}/portrait_xlarge.${character.thumbnail?.extension}` } alt={character.name} />
-            {character.name}
-          </CharactersContainers>
-        ))}
-      </GridContainer>
-      {(loading || typing) && <Loading/>}
+      <CardsContainer>
+        {characters && characters.map((character) => <Cards character={character} key={character.id}/>)}
+      </CardsContainer>
+      {(loading || isTyping) && <Loading/>}
       {error && <Title>Error</Title>}
     </ViewContainer>
   )
