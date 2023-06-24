@@ -1,9 +1,7 @@
 import React from 'react'
 import BaseTitle from "../styles/BaseTitle"
 import styled from 'styled-components'
-import useFetch from '../hooks/UseFetch'
 import Input from '../components/Input'
-import { Characters } from '../typescript/interfaces/apiInterfaces'
 import SortIcon from '@mui/icons-material/Sort';
 import AspectRatioIcon from '@mui/icons-material/AspectRatio';
 // import PopUpMenu from '../components/PopUpMenu'
@@ -11,6 +9,7 @@ import MethodNotImplementedContext from '../contexts/MethodNotImplementedContext
 import Loading from '../components/Loading'
 import CardsContainer from '../components/CardsContainer'
 import Cards from '../components/Cards'
+import CharactersDataContext from '../contexts/CharactersContext'
 
 
 const ViewContainer = styled.div`
@@ -64,46 +63,35 @@ const StyledIconButton = styled.button`
   
   `
 
-export default function CharactersView() {
+export default React.memo(function CharactersView() {
   const { toggleBox } = React.useContext(MethodNotImplementedContext)
-  const { loading, error, request } = useFetch()
-  const [characters, setCharacters] = React.useState<Characters[]>()
-  const [apiOffset, setApiOffset] = React.useState(0)
   const [searchTerm, setSearchTerm] = React.useState('')
-  const [searched, setSearched] = React.useState(false)
   const [typingText, setTypingText] = React.useState('')
   const [isTyping, setIsTyping] = React.useState(false)
+  const { apiOffset, setApiOffset, disableFirstRender, setDisableFirstRender, fetchCharacters, loading, characters, error } = React.useContext(CharactersDataContext)
   // const [isSortMenuOpened, setIsSortMenuOpened] = React.useState(false)
   // const [isAspectRatioOpened, setIsAspectRatioOpened] = React.useState(false)
 
-    React.useEffect(() => {
-      async function fetchCharacters(offset?: number, name?: string) {
-        if (name) {
-          setApiOffset(0)
-          setSearched(true)
-          const data = await request("/characters", apiOffset, name)
-          setCharacters(data?.results)
-        } else {
-          const data = await request("/characters", offset, name)
-          if (!characters || searched) {
-            setSearched(false)
-            setCharacters(data?.results)
-          } else {
-            setCharacters((chrt)=> chrt!.concat(data?.results))
-          }
-        }
-      }  
-      
-      console.log(characters)  
-      // if (!characters) {
+  React.useEffect(() => {
+      console.log(`na boca do gol ${loading}`)
+      console.log(`na boca do gol ${isTyping}`)
+      if (!disableFirstRender) {
         if (searchTerm) {
+          console.log("nem deveria ta aqui")
           fetchCharacters(apiOffset, searchTerm)
-          
         } else {
+          console.log("cade eu?")
           fetchCharacters(apiOffset);
         }
-      // }
-    }, [request, apiOffset, searchTerm])
+    }
+    setDisableFirstRender(false)
+    console.log("habilitado novamente")
+    
+    return () => {
+      setDisableFirstRender(true)
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [apiOffset, searchTerm])
   
     React.useEffect(() => {
       function handleScroll() {
@@ -127,6 +115,7 @@ export default function CharactersView() {
       return () => {
         window.removeEventListener('scroll', handleScroll);
       };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [apiOffset, searchTerm]);
   
   React.useEffect(() => {
@@ -196,4 +185,4 @@ export default function CharactersView() {
       {error && <Title>Error</Title>}
     </ViewContainer>
   )
-}
+})

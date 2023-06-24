@@ -10,7 +10,7 @@ const StyledCardsContainer = styled.div`
   grid-template-columns: repeat(6, minmax(50px, 1fr));
   grid-gap: 5px;
   /* justify-content: space-between; */
-  margin-bottom: 20px;
+  margin-bottom: 40px;
   /* border: 1px solid lime; */
   `
 

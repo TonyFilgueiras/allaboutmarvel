@@ -5,10 +5,12 @@ import { styled } from 'styled-components'
 const Title = styled.h1`
     ${BaseTitle}
     position: fixed;
+    padding: 20px;
     left: 50vw;
+    background-color: ${({theme})=> theme.colors.black};
     top: 50vh;
     transform: translate(-50%);
-    margin-bottom: 40px;
+    margin: 0 0 0px 0;
 `
 
 export default function Loading() {

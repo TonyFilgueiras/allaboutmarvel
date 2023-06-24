@@ -9,6 +9,7 @@ import { theme } from './styles/Theme';
 import GlobalStyle from './styles/GlobalStyle';
 import Footer from './components/Footer';
 import MethodNotImplemented from './components/MethodNotImplemented';
+import { CharactersDataProvider } from './contexts/CharactersContext';
 
 
 function App() {
@@ -17,11 +18,13 @@ function App() {
       <GlobalStyle/>
       <BrowserRouter>
         <Header/>
+        <CharactersDataProvider>
           <Routes>
-            <Route path="/" element={<HomeView/>} />
-            <Route path="/characters" element={<CharactersView/>}/>
+            <Route path="/" element={<HomeView />} />
+              <Route path="/characters" element={<CharactersView/>}/>
             <Route path="*" element={<NotFoundView />} />
           </Routes>
+        </CharactersDataProvider>
       <Footer/>
       </BrowserRouter>
       <MethodNotImplemented/>
