@@ -1,5 +1,4 @@
 import React from 'react'
-import BaseTitle from "../styles/BaseTitle"
 import styled from 'styled-components'
 import Input from '../components/Input'
 import SortIcon from '@mui/icons-material/Sort';
@@ -10,16 +9,14 @@ import Loading from '../components/Loading'
 import CardsContainer from '../components/CardsContainer'
 import Cards from '../components/Cards'
 import CharactersDataContext from '../contexts/CharactersContext'
+import Title from '../components/Title';
+
 
 
 const ViewContainer = styled.div`
   width: 70vw;
   margin: 0 auto;
   text-align: center;
-`
-
-const Title = styled.h1`
-  ${BaseTitle};
 `
 
 const OptionsContainer = styled.ul`
@@ -66,27 +63,21 @@ const StyledIconButton = styled.button`
 export default React.memo(function CharactersView() {
   const { toggleBox } = React.useContext(MethodNotImplementedContext)
   const [searchTerm, setSearchTerm] = React.useState('')
-  const [typingText, setTypingText] = React.useState('')
   const [isTyping, setIsTyping] = React.useState(false)
-  const { apiOffset, setApiOffset, disableFirstRender, setDisableFirstRender, fetchCharacters, loading, characters, error } = React.useContext(CharactersDataContext)
+  const { typingText, setTypingText, apiOffset, setApiOffset, disableFirstRender, setDisableFirstRender, fetchCharacters, loading, characters, error } = React.useContext(CharactersDataContext)
   // const [isSortMenuOpened, setIsSortMenuOpened] = React.useState(false)
   // const [isAspectRatioOpened, setIsAspectRatioOpened] = React.useState(false)
 
   React.useEffect(() => {
-      console.log(`na boca do gol ${loading}`)
-      console.log(`na boca do gol ${isTyping}`)
       if (!disableFirstRender) {
         if (searchTerm) {
-          console.log("nem deveria ta aqui")
           fetchCharacters(apiOffset, searchTerm)
         } else {
-          console.log("cade eu?")
           fetchCharacters(apiOffset);
         }
     }
     setDisableFirstRender(false)
-    console.log("habilitado novamente")
-    
+   
     return () => {
       setDisableFirstRender(true)
     };
@@ -101,10 +92,8 @@ export default React.memo(function CharactersView() {
         const documentHeight = document.documentElement.scrollHeight;
 
         // Check if scrolled to the bottom
-        if (scrollTop + windowHeight >= documentHeight && !searchTerm && !loading) {
+        if (scrollTop + windowHeight >= documentHeight && !typingText && !loading) {
           setApiOffset(apiOffset + 100)
-          console.log(apiOffset)
-          console.log('Scrolled to the bottom');
         }
       }
   
@@ -116,16 +105,18 @@ export default React.memo(function CharactersView() {
         window.removeEventListener('scroll', handleScroll);
       };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [apiOffset, searchTerm]);
+    }, [apiOffset, typingText]);
   
   React.useEffect(() => {
+    if (!disableFirstRender) {
       setIsTyping(true)
       const typingTimer = setTimeout(() => {
         setIsTyping(false)
         setSearchTerm(typingText)
       }, 2500)
       
-      return ()=> clearTimeout(typingTimer)
+      return () => clearTimeout(typingTimer)
+    }
   },[typingText])
   
   // function handleSortIconClick(event :React.MouseEvent<HTMLButtonElement>) {
@@ -163,7 +154,7 @@ export default React.memo(function CharactersView() {
   return (
     <ViewContainer>
       <Title>Characters</Title>
-      <Input type='text' placeholder='Search for Character' onChange={(event) => setTypingText(event.target.value)} />
+      <Input value={typingText} type='text' placeholder='Search for Character' onChange={(event) => setTypingText(event.target.value)} />
       <OptionsContainer>
         <OptionItem>
           <OptionLabel>Sort</OptionLabel>
@@ -178,9 +169,9 @@ export default React.memo(function CharactersView() {
         </OptionItem>
 
       </OptionsContainer>
-      <CardsContainer>
-        {characters && characters.map((character) => <Cards character={character} key={character.id}/>)}
-      </CardsContainer>
+        <CardsContainer>
+          {characters && characters.map((character) => <Cards character={character} key={character.id}/>)}
+        </CardsContainer>
       {(loading || isTyping) && <Loading/>}
       {error && <Title>Error</Title>}
     </ViewContainer>

@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Characters } from '../typescript/interfaces/apiInterfaces'
+import { Link } from 'react-router-dom';
 
 type Props = {
     character : Characters,
@@ -8,8 +9,11 @@ type Props = {
 
 
 const StyledCards = styled.div`
-  display: flex;
-  flex-direction: column;
+  a{
+    display: flex;
+    flex-direction: column;
+  }
+
   &:hover img{
     border: 3px inset red;
   } &:hover{
@@ -29,8 +33,10 @@ const CardsImg = styled.img`
 export default function Cards({character}: Props) {
   return (
     <StyledCards key={character.id}>
-        <CardsImg src={ `${character.thumbnail?.path}/portrait_xlarge.${character.thumbnail?.extension}` } alt={character.name} />
-        {character.name}
+        <Link to={`${character.id}`}>
+          <CardsImg src={ `${character.thumbnail?.path}/portrait_xlarge.${character.thumbnail?.extension}` } alt={character.name} />
+          {character.name}
+        </Link>
     </StyledCards>
   )
 }

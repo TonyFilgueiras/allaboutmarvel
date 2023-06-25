@@ -1,6 +1,6 @@
 export type Urls = {
     type?: string,
-    url ?: string
+    url : string
 }
 
 export type Image = {
@@ -28,4 +28,9 @@ export type TextObject = {
     type?: string,
     language?: string,
     text?: string,
+}
+
+export type Links = {
+    url: string,
+    text: string,
 }

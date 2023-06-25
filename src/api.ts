@@ -13,6 +13,5 @@ export const api = axios.create({
         ts: ts,
         apikey: process.env.REACT_APP_PUBLIC_API_KEY,
         hash: hash,
-        limit: 100
         },
 })

@@ -10,6 +10,7 @@ import GlobalStyle from './styles/GlobalStyle';
 import Footer from './components/Footer';
 import MethodNotImplemented from './components/MethodNotImplemented';
 import { CharactersDataProvider } from './contexts/CharactersContext';
+import CharacterInfoView from './views/CharacterInfoView';
 
 
 function App() {
@@ -21,7 +22,8 @@ function App() {
         <CharactersDataProvider>
           <Routes>
             <Route path="/" element={<HomeView />} />
-              <Route path="/characters" element={<CharactersView/>}/>
+            <Route path="/characters" element={<CharactersView/>}/>
+            <Route path="/characters/:id" element={<CharacterInfoView/>}/>
             <Route path="*" element={<NotFoundView />} />
           </Routes>
         </CharactersDataProvider>

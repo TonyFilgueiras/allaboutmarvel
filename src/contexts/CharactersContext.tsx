@@ -7,22 +7,26 @@ interface CharactersDataProps {
   }
 
 interface CharactersDataType {
-    characters?: Characters[];
-    fetchCharacters: (offset?: number, name?: string) => void;
-    error?: string;
-    loading: boolean;
-    setApiOffset: React.Dispatch<React.SetStateAction<number>>;
-    apiOffset: number;
-    setDisableFirstRender: React.Dispatch<React.SetStateAction<boolean>>;
-    disableFirstRender: boolean;
+  characters?: Characters[];
+  fetchCharacters: (offset?: number, name?: string) => void;
+  error?: string;
+  loading: boolean;
+  setApiOffset: React.Dispatch<React.SetStateAction<number>>;
+  apiOffset: number;
+  setDisableFirstRender: React.Dispatch<React.SetStateAction<boolean>>;
+  disableFirstRender: boolean;
+  typingText: string;
+  setTypingText: React.Dispatch<React.SetStateAction<string>>;
 }
 const initialValue = {
-    fetchCharacters: () => { },
-    loading: false,
-    setApiOffset: () => { },
-    apiOffset: 0,
-    setDisableFirstRender: () => { },
-    disableFirstRender : false,
+  fetchCharacters: () => { },
+  loading: false,
+  setApiOffset: () => { },
+  apiOffset: 0,
+  setDisableFirstRender: () => { },
+  disableFirstRender: false,
+  typingText: '',
+  setTypingText: ()=>{},
 };
   
 const CharactersDataContext = React.createContext<CharactersDataType>(initialValue);
@@ -32,17 +36,17 @@ export const CharactersDataProvider = ({ children }:CharactersDataProps) => {
     const [searched, setSearched] = React.useState(false)
     const [characters, setCharacters] = React.useState<Characters[]>()
     const {error,loading,request} = useFetch()
-    const [disableFirstRender, setDisableFirstRender] = React.useState(false)
+  const [disableFirstRender, setDisableFirstRender] = React.useState(false)
+  const [typingText, setTypingText] = React.useState('')
 
     async function fetchCharacters(offset?: number, name?: string)  {
         if (name) {
             setApiOffset(0)
             setSearched(true)
-            console.log("cehguei aqui bro nem sei como")
-            const data = await request("/characters", apiOffset, name)
+            const data = await request("/characters", name, offset)
             setCharacters(data?.results)
           } else {
-            const data = await request("/characters", offset, name)
+            const data = await request("/characters", name, offset)
             if (!characters || searched) {
               setSearched(false)
               setCharacters(data?.results)
@@ -61,6 +65,9 @@ export const CharactersDataProvider = ({ children }:CharactersDataProps) => {
       apiOffset,
       setDisableFirstRender,
     disableFirstRender,
+    typingText,
+    setTypingText,
+    
   };
 
   return (

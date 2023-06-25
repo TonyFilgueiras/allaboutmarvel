@@ -4,7 +4,8 @@ import styled from 'styled-components'
 type Props = {
     placeholder: string,
     type: string,
-    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    value: string
 }
 
 const StyledInput = styled.input`

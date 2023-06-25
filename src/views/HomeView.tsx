@@ -6,7 +6,7 @@ import captain_america from "../img/captain_america.jpg"
 import hulk from "../img/hulk.jpg"
 import iron_man from "../img/iron_man.jpg"
 import thor from "../img/thor.jpg"
-import BaseTitle from "../styles/BaseTitle"
+import {StyledTitle} from '../components/Title'
 
 const ThumbnailContainer = styled.div`
   display: grid;
@@ -34,8 +34,7 @@ const HeroThumbnail = styled.img<{ $animationDelay?: number; $isHoverDisabled?: 
     `}
 `;
 
-const Title = styled.h1<{ $animationDelay?: number; $isHoverDisabled?: boolean }>`
-  ${BaseTitle}
+const HomeTitle = styled(StyledTitle)<{ $animationDelay?: number; $isHoverDisabled?: boolean }>`
   position: absolute!important;
   bottom: 25vh;
   transform: translateX(-50%);
@@ -64,7 +63,7 @@ export default function HomeView() {
         <HeroThumbnail $isHoverDisabled={isHoverDisabled} $animationDelay={1.5} src={ thor } alt="Thor"/>
 
       </ThumbnailContainer>
-      <Title $animationDelay={2}>All about the Marvel universe</Title>
+      <HomeTitle $animationDelay={2}>All about the Marvel universe</HomeTitle>
     </>
   )
 }

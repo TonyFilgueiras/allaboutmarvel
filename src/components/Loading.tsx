@@ -1,9 +1,8 @@
 import React from 'react'
-import BaseTitle from '../styles/BaseTitle'
 import { styled } from 'styled-components'
+import { StyledTitle } from './Title'
 
-const Title = styled.h1`
-    ${BaseTitle}
+const LoadingTitle = styled(StyledTitle)`
     position: fixed;
     padding: 20px;
     left: 50vw;
@@ -15,6 +14,6 @@ const Title = styled.h1`
 
 export default function Loading() {
   return (
-    <Title>Loading</Title>
+    <LoadingTitle>Loading</LoadingTitle>
   )
 }
