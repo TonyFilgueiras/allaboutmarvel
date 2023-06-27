@@ -1,3 +1,5 @@
+import { Characters, Comics, Events, Series, Stories } from "./interfaces/apiInterfaces"
+
 export type Urls = {
     type?: string,
     url : string
@@ -31,6 +33,9 @@ export type TextObject = {
 }
 
 export type Links = {
+    id: number,
     url: string,
     text: string,
 }
+
+export type Card = Characters | Comics | Events | Series | Stories

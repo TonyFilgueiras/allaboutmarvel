@@ -1,14 +1,14 @@
 import React from 'react';
-import { Characters } from '../typescript/interfaces/apiInterfaces';
+import { Stories } from '../typescript/interfaces/apiInterfaces';
 import useFetch from '../hooks/UseFetch';
 
-interface CharactersDataProps {
+interface StoriesDataProps {
     children: React.ReactNode;
   }
 
-interface CharactersDataType {
-  data?: Characters[];
-  fetchData: (offset?: number, name?: string) => void;
+interface StoriesDataType {
+  data?: Stories[];
+  fetchData: (offset?: number, title?: string) => void;
   error?: string;
   loading: boolean;
   setApiOffset: React.Dispatch<React.SetStateAction<number>>;
@@ -29,24 +29,24 @@ const initialValue = {
   setTypingText: ()=>{},
 };
   
-const CharactersDataContext = React.createContext<CharactersDataType>(initialValue);
+const StoriesDataContext = React.createContext<StoriesDataType>(initialValue);
 
-export const CharactersDataProvider = ({ children }:CharactersDataProps) => {
-  const [apiOffset, setApiOffset] = React.useState(0)
-  const [searched, setSearched] = React.useState(false)
-  const [data, setData] = React.useState<Characters[]>()
-  const {error,loading,request} = useFetch()
+export const StoriesDataProvider = ({ children }:StoriesDataProps) => {
+    const [apiOffset, setApiOffset] = React.useState(0)
+    const [searched, setSearched] = React.useState(false)
+    const [data, setData] = React.useState<Stories[]>()
+    const {error,loading,request} = useFetch()
   const [disableFirstRender, setDisableFirstRender] = React.useState(false)
   const [typingText, setTypingText] = React.useState('')
 
-    async function fetchData(offset?: number, name?: string)  {
-        if (name) {
+    async function fetchData(offset?: number, title?: string)  {
+        if (title) {
             setApiOffset(0)
             setSearched(true)
-            const json = await request("/characters", name, offset)
+            const json = await request("/stories", title, offset)
             setData(json?.results)
           } else {
-            const json = await request("/characters", name, offset)
+            const json = await request("/stories", title, offset)
             if (!json || searched) {
               setSearched(false)
               setData(json?.results)
@@ -56,7 +56,7 @@ export const CharactersDataProvider = ({ children }:CharactersDataProps) => {
           }
   };
 
-  const contextValue: CharactersDataType = {
+  const contextValue: StoriesDataType = {
     data,
     fetchData,
     error,
@@ -71,10 +71,10 @@ export const CharactersDataProvider = ({ children }:CharactersDataProps) => {
   };
 
   return (
-    <CharactersDataContext.Provider value={contextValue}>
+    <StoriesDataContext.Provider value={contextValue}>
       {children}
-    </CharactersDataContext.Provider>
+    </StoriesDataContext.Provider>
   );
 };
 
-export default CharactersDataContext;
+export default StoriesDataContext;

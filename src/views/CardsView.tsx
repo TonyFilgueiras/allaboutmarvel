@@ -10,6 +10,11 @@ import CardsContainer from '../components/CardsContainer'
 import Cards from '../components/Cards'
 import CharactersDataContext from '../contexts/CharactersContext'
 import Title from '../components/Title';
+import { useParams } from 'react-router-dom';
+import ComicsDataContext from '../contexts/ComicsContext';
+import EventsDataContext from '../contexts/Events';
+import SeriesDataContext from '../contexts/Series';
+import StoriesDataContext from '../contexts/Stories';
 
 
 
@@ -62,28 +67,66 @@ const StyledIconButton = styled.button`
 
 export default React.memo(function CharactersView() {
   const { toggleBox } = React.useContext(MethodNotImplementedContext)
+  const { cards } = useParams()
   const [searchTerm, setSearchTerm] = React.useState('')
   const [isTyping, setIsTyping] = React.useState(false)
-  const { typingText, setTypingText, apiOffset, setApiOffset, disableFirstRender, setDisableFirstRender, fetchCharacters, loading, characters, error } = React.useContext(CharactersDataContext)
+  // const { typingText, setTypingText, apiOffset, setApiOffset, disableFirstRender, setDisableFirstRender, fetchCharacters, loading, characters, error } = React.useContext(CharactersDataContext)
+  // const { typingText, setTypingText, apiOffset, setApiOffset, disableFirstRender, setDisableFirstRender, fetchComics, loading, comics, error } = React.useContext(ComicsDataContext)
+  const characterData = React.useContext(CharactersDataContext);
+  const comicsData = React.useContext(ComicsDataContext);
+  const eventsData = React.useContext(EventsDataContext);
+  const seriesData = React.useContext(SeriesDataContext);
+  const storiesData = React.useContext(StoriesDataContext);
+  const [contextUsing, setContextUsing] = React.useState<number>(0)
+  const contextData = [ characterData, comicsData, eventsData, seriesData, storiesData ];
   // const [isSortMenuOpened, setIsSortMenuOpened] = React.useState(false)
   // const [isAspectRatioOpened, setIsAspectRatioOpened] = React.useState(false)
 
   React.useEffect(() => {
-      if (!disableFirstRender) {
+    switch (cards) {
+      case 'characters':
+        setContextUsing(0);
+        console.log(`to no character ${cards}`)
+        break;
+      case 'comics':
+        setContextUsing(1);
+        console.log(`to no comedias ${cards}`)
+        break;
+      case 'events':
+        setContextUsing(2);
+        console.log(`to no comedias ${cards}`)
+        break;
+      case 'series':
+        setContextUsing(3);
+        console.log(`to no comedias ${cards}`)
+        break;
+      case 'stories':
+        setContextUsing(4);
+        console.log(`to no comedias ${cards}`)
+        break;
+
+    }
+    console.log(contextUsing)
+  },[cards,contextUsing])
+
+  React.useEffect(() => {
+      if (!contextData[contextUsing].disableFirstRender) {
         if (searchTerm) {
-          fetchCharacters(apiOffset, searchTerm)
+          contextData[contextUsing].fetchData(contextData[contextUsing].apiOffset, searchTerm)
+          console.log("to ficando maluco cara")
         } else {
-          fetchCharacters(apiOffset);
+          contextData[contextUsing].fetchData(contextData[contextUsing].apiOffset);
+          console.log("to ficando maluco cara2")
         }
     }
-    setDisableFirstRender(false)
-   
+    contextData[contextUsing].setDisableFirstRender(false)
+    
     return () => {
-      setDisableFirstRender(true)
+      contextData[contextUsing].setDisableFirstRender(true)
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [apiOffset, searchTerm])
-  
+  }, [contextData[contextUsing].apiOffset, searchTerm, contextUsing])
+    
     React.useEffect(() => {
       function handleScroll() {
         // Calculate the scroll position
@@ -92,8 +135,8 @@ export default React.memo(function CharactersView() {
         const documentHeight = document.documentElement.scrollHeight;
 
         // Check if scrolled to the bottom
-        if (scrollTop + windowHeight >= documentHeight && !typingText && !loading) {
-          setApiOffset(apiOffset + 100)
+        if (scrollTop + windowHeight >= documentHeight && !contextData[contextUsing].typingText && !contextData[contextUsing].loading) {
+          contextData[contextUsing].setApiOffset(contextData[contextUsing].apiOffset + 100)
         }
       }
   
@@ -105,19 +148,19 @@ export default React.memo(function CharactersView() {
         window.removeEventListener('scroll', handleScroll);
       };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [apiOffset, typingText]);
+    }, [contextData[contextUsing].apiOffset, contextData[contextUsing].typingText]);
   
   React.useEffect(() => {
-    if (!disableFirstRender) {
+    if (!contextData[contextUsing].disableFirstRender) {
       setIsTyping(true)
       const typingTimer = setTimeout(() => {
         setIsTyping(false)
-        setSearchTerm(typingText)
+        setSearchTerm(contextData[contextUsing].typingText)
       }, 2500)
       
       return () => clearTimeout(typingTimer)
     }
-  },[typingText])
+  },[contextData[contextUsing].typingText])
   
   // function handleSortIconClick(event :React.MouseEvent<HTMLButtonElement>) {
   //   const { clientX, clientY} = event;
@@ -150,11 +193,11 @@ export default React.memo(function CharactersView() {
   // function handleResize(id: number) {
   //   console.log(`id: ${id}`)
   // }
-  
+
   return (
     <ViewContainer>
-      <Title>Characters</Title>
-      <Input value={typingText} type='text' placeholder='Search for Character' onChange={(event) => setTypingText(event.target.value)} />
+      <Title>{cards![0].toUpperCase() + cards?.slice(1)}</Title>
+      <Input value={contextData[contextUsing].typingText} type='text' placeholder='Search for Character' onChange={(event) => contextData[contextUsing].setTypingText(event.target.value)} />
       <OptionsContainer>
         <OptionItem>
           <OptionLabel>Sort</OptionLabel>
@@ -170,10 +213,10 @@ export default React.memo(function CharactersView() {
 
       </OptionsContainer>
         <CardsContainer>
-          {characters && characters.map((character) => <Cards character={character} key={character.id}/>)}
+          {contextData[contextUsing].data && contextData[contextUsing].data!.map((card) => <Cards card={card} key={card.id}/>)}
         </CardsContainer>
-      {(loading || isTyping) && <Loading/>}
-      {error && <Title>Error</Title>}
+      {(contextData[contextUsing].loading || isTyping) && <Loading/>}
+      {contextData[contextUsing].error && <Title>Error</Title>}
     </ViewContainer>
   )
 })

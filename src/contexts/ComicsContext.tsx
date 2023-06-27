@@ -1,14 +1,14 @@
 import React from 'react';
-import { Characters } from '../typescript/interfaces/apiInterfaces';
+import { Comics } from '../typescript/interfaces/apiInterfaces';
 import useFetch from '../hooks/UseFetch';
 
-interface CharactersDataProps {
+interface ComicsDataProps {
     children: React.ReactNode;
   }
 
-interface CharactersDataType {
-  data?: Characters[];
-  fetchData: (offset?: number, name?: string) => void;
+interface ComicsDataType {
+  data?: Comics[];
+  fetchData: (offset?: number, title?: string) => void;
   error?: string;
   loading: boolean;
   setApiOffset: React.Dispatch<React.SetStateAction<number>>;
@@ -29,24 +29,24 @@ const initialValue = {
   setTypingText: ()=>{},
 };
   
-const CharactersDataContext = React.createContext<CharactersDataType>(initialValue);
+const ComicsDataContext = React.createContext<ComicsDataType>(initialValue);
 
-export const CharactersDataProvider = ({ children }:CharactersDataProps) => {
-  const [apiOffset, setApiOffset] = React.useState(0)
-  const [searched, setSearched] = React.useState(false)
-  const [data, setData] = React.useState<Characters[]>()
-  const {error,loading,request} = useFetch()
+export const ComicsDataProvider = ({ children }:ComicsDataProps) => {
+    const [apiOffset, setApiOffset] = React.useState(0)
+    const [searched, setSearched] = React.useState(false)
+    const [data, setData] = React.useState<Comics[]>()
+    const {error,loading,request} = useFetch()
   const [disableFirstRender, setDisableFirstRender] = React.useState(false)
   const [typingText, setTypingText] = React.useState('')
 
-    async function fetchData(offset?: number, name?: string)  {
-        if (name) {
+    async function fetchData(offset?: number, title?: string)  {
+        if (title) {
             setApiOffset(0)
             setSearched(true)
-            const json = await request("/characters", name, offset)
+            const json = await request("/comics", title, offset)
             setData(json?.results)
           } else {
-            const json = await request("/characters", name, offset)
+            const json = await request("/comics", title, offset)
             if (!json || searched) {
               setSearched(false)
               setData(json?.results)
@@ -56,7 +56,7 @@ export const CharactersDataProvider = ({ children }:CharactersDataProps) => {
           }
   };
 
-  const contextValue: CharactersDataType = {
+  const contextValue: ComicsDataType = {
     data,
     fetchData,
     error,
@@ -71,10 +71,10 @@ export const CharactersDataProvider = ({ children }:CharactersDataProps) => {
   };
 
   return (
-    <CharactersDataContext.Provider value={contextValue}>
+    <ComicsDataContext.Provider value={contextValue}>
       {children}
-    </CharactersDataContext.Provider>
+    </ComicsDataContext.Provider>
   );
 };
 
-export default CharactersDataContext;
+export default ComicsDataContext;

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import marvel_logo from "../img/marvel_logo.png"
 import { Link } from 'react-router-dom'
 import { Links } from '../typescript/types'
-import NavLink from './NavLink'
+import NavComponent from './NavComponent'
 
 
 const StyledHeader = styled.header`
@@ -29,12 +29,11 @@ const MarvelLogo = styled.img`
 `
 export default function Header() {
   const headerLinks: Links[] = [
-    { text:'Characters', url: '/characters'}, 
-    { text: 'Creators', url:'/creators'},
-    { text: 'Comics', url: '/comics'},
-    { text: 'Events', url: '/events'},
-    { text: 'Series', url :'/series' },
-    { text: 'Stories', url: '/stories' },
+    {id: 1, text:'Characters', url: '/characters'}, 
+    {id: 3, text: 'Comics', url: '/comics'},
+    {id: 4, text: 'Events', url: '/events'},
+    {id: 5, text: 'Series', url :'/series' },
+    {id: 6, text: 'Stories', url: '/stories' },
   ] 
 
   return (
@@ -42,7 +41,7 @@ export default function Header() {
           <Link to="/">
               <MarvelLogo src={ marvel_logo } />
           </Link>
-          <NavLink links={headerLinks}/>
+          <NavComponent active={false} links={headerLinks}/>
       </StyledHeader>
   )
 }

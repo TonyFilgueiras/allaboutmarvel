@@ -10,17 +10,33 @@ export default function useFetch() {
     const request  = React.useCallback(async (url: string, _name ?: string, _offset: number = 0, specificSearch: boolean = false ) => { 
         let response: AxiosResponse<MarvelData>;
         let data: DataContainer | undefined
-
+        let params: {
+            offset?: number,
+            nameStartsWith?: string,
+            titleStartsWith?: string,
+            limit: number,
+        }
         try { 
             setError('')
             setLoading(true)
 
-
-            const params = {
-                offset: _offset,
-                nameStartsWith: _name,
-                limit: 100,
-            }
+            switch (url) {
+                case '/characters' || "events":
+                  params = {
+                    offset: _offset,
+                    nameStartsWith: _name,
+                    limit: 100,
+                    };
+                    console.log("to aqui")
+                  break;
+                default:
+                  params = {
+                    offset: _offset,
+                    titleStartsWith: _name,
+                    limit: 100,
+                  };
+              }
+              
 
             console.log('consultando como quem n quer nada kkkk se fode ae seu cuzao')
             

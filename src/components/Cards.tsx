@@ -1,10 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Characters } from '../typescript/interfaces/apiInterfaces'
-import { Link } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
+import { Card } from '../typescript/types';
 
 type Props = {
-    character : Characters,
+    card : Card
 }
 
 
@@ -13,12 +13,14 @@ const StyledCards = styled.div`
     display: flex;
     flex-direction: column;
   }
-
   &:hover img{
     border: 3px inset red;
-  } &:hover{
-    cursor: pointer;
-  }
+  } &:hover,
+    label:hover{
+      cursor: pointer;
+    }
+    /* border: 1px solid yellow; */
+    min-height: 150px;
   
   `
 const CardsImg = styled.img`
@@ -30,13 +32,34 @@ const CardsImg = styled.img`
   transition: all.2s;
 `
 
-export default function Cards({character}: Props) {
+export default function Cards({ card }: Props) {
+  const { detail } = useParams()
+  
+  function getCardDisplayName(card : Card): string {
+    if ('name' in card) {
+      return card.name;
+    } else if ('title' in card) {
+      return card.title;
+    } else {
+      return 'Unknown';
+    }
+  }
+
   return (
-    <StyledCards key={character.id}>
-        <Link to={`${character.id}`}>
-          <CardsImg src={ `${character.thumbnail?.path}/portrait_xlarge.${character.thumbnail?.extension}` } alt={character.name} />
-          {character.name}
-        </Link>
+    <StyledCards key={card.id}>
+      {detail ?
+        <NavLink to={`/${detail}/${card.id}`}>
+        {card.thumbnail && 
+          <CardsImg src={ `${card.thumbnail?.path}/portrait_xlarge.${card.thumbnail?.extension}` } alt={getCardDisplayName(card)} />
+        }
+          <label>{getCardDisplayName(card)}</label>
+      </NavLink> :
+        <NavLink to={`${card.id}`}>
+        {card.thumbnail && 
+          <CardsImg src={ `${card.thumbnail?.path}/portrait_xlarge.${card.thumbnail?.extension}` } alt={getCardDisplayName(card)} />
+        }
+          <label>{getCardDisplayName(card)}</label>
+        </NavLink>}
     </StyledCards>
   )
 }
