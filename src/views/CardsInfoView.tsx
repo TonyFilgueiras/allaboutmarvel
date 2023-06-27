@@ -1,13 +1,19 @@
 import React from 'react'
 import { Outlet, useParams } from 'react-router-dom'
-import CharactersDataContext from '../contexts/CharactersContext'
+// import CharactersDataContext from '../contexts/CharactersContext'
 import { Characters } from '../typescript/interfaces/apiInterfaces'
-import Title, { StyledTitle } from '../components/Title'
+import Title from '../components/Title'
 import { styled } from 'styled-components'
 import useFetch from '../hooks/UseFetch'
 import Loading from '../components/Loading'
 import NavComponent from '../components/NavComponent'
 import { Links } from '../typescript/types'
+// import ComicsDataContext from '../contexts/ComicsContext'
+// import EventsDataContext from '../contexts/EventsContext'
+// import SeriesDataContext from '../contexts/SeriesContext'
+// import StoriesDataContext from '../contexts/StoriesContext'
+import getCardDisplayName from '../utils/GetCardDisplayName'
+import Error from '../components/Error'
 
 const InfoContainer = styled.div`
   margin: 0 auto;
@@ -61,10 +67,22 @@ const UrlType = styled.label`
   margin-right: 5px;
 `
 
+const DescriptionContainer = styled.div`
+  display: grid;
+  grid-template-columns: 15% 85%;
+  align-items: center;
+`
+
 export default function CharacterInfoView() {
   const { cards, id, detail } = useParams()
-  const [character, setCharacter] = React.useState<Characters>()
-  const { data } = React.useContext(CharactersDataContext)
+  const [cardInfo, setCardInfo] = React.useState<Characters>()
+  // const characterData = React.useContext(CharactersDataContext);
+  // const comicsData = React.useContext(ComicsDataContext);
+  // const eventsData = React.useContext(EventsDataContext);
+  // const seriesData = React.useContext(SeriesDataContext);
+  // const storiesData = React.useContext(StoriesDataContext);
+  const [contextUsing, setContextUsing] = React.useState<number>(0)
+  // const contextData = [ characterData, comicsData, eventsData, seriesData, storiesData ];
   const { loading, error, request } = useFetch()
   const characterLinks: Links[] = [
     {id: 1, text: 'Characters', url: `characters`},
@@ -73,31 +91,62 @@ export default function CharacterInfoView() {
     {id: 4, text: 'Series', url :`series` },
     {id: 5, text: 'Stories', url: `stories` },
   ] 
-  React.useEffect(() => {
-    if (data) {
-      setCharacter(data?.find(x => x.id === Number(id)))
-      console.log(character)
-    } else {
-      request(`characters/${id}`, undefined, 0, true)
-        .then((data) => setCharacter(data?.results[0])
-      )
-      console.log(character)
-      
-    }
 
+  React.useEffect(() => {
+    switch (cards) {
+      case 'characters':
+        setContextUsing(0);
+        break;
+      case 'comics':
+        setContextUsing(1);
+        break;
+      case 'events':
+        setContextUsing(2);
+        break;
+      case 'series':
+        setContextUsing(3);
+        break;
+      case 'stories':
+        setContextUsing(4);
+        break;
+    }
+    
+  },[cards,contextUsing])
+
+  React.useEffect(() => {
+    request(`${cards}/${id}`, undefined, 0, true)
+      .then((data) => 
+        {console.log(data)
+        setCardInfo(data?.results[0])}
+    )
+    
+    
+    console.log(cardInfo)
+    console.log(cards)
+    
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[id, detail])
 
   return (
     <InfoContainer>
-      <Title>{character?.name}</Title>
-      <InfoThumbnail src={`${character?.thumbnail?.path}/landscape_xlarge	.${character?.thumbnail?.extension}`} alt="" />
-      <label>{character?.modified }</label>
-      <UrlContainer>{character?.urls?.map((url) => 
+      {cardInfo && 
+      <Title>{getCardDisplayName(cardInfo)}</Title>
+      
+      }
+      {cardInfo?.thumbnail &&
+        <InfoThumbnail src={`${cardInfo?.thumbnail?.path}/landscape_xlarge	.${cardInfo?.thumbnail?.extension}`} alt="" />
+      }
+      <label>{cardInfo?.modified }</label>
+      <UrlContainer>{cardInfo?.urls?.map((url) => 
         <li key={url.type}>
           <UrlType>{ url.type}: </UrlType>
           <a href={url.url} target="_blank" rel="noreferrer">{url.url}</a>
         </li>
       )}</UrlContainer>
+      {cardInfo?.description && <DescriptionContainer>
+        <Title>Description: </Title>
+        <label>{cardInfo?.description }</label>
+      </DescriptionContainer>}
       <LabelContainer>
         <NavComponent active={true} links={characterLinks.filter((item) => {
           if (cards === "comics") {
@@ -109,7 +158,7 @@ export default function CharacterInfoView() {
       </LabelContainer>
       <Outlet/>
       {loading  && <Loading/>}
-      {error && <Title>Error</Title>}
+      {error && <Error/>}
     </InfoContainer>
     )
   }

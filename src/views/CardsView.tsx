@@ -12,9 +12,10 @@ import CharactersDataContext from '../contexts/CharactersContext'
 import Title from '../components/Title';
 import { useParams } from 'react-router-dom';
 import ComicsDataContext from '../contexts/ComicsContext';
-import EventsDataContext from '../contexts/Events';
-import SeriesDataContext from '../contexts/Series';
-import StoriesDataContext from '../contexts/Stories';
+import EventsDataContext from '../contexts/EventsContext';
+import SeriesDataContext from '../contexts/SeriesContext';
+import StoriesDataContext from '../contexts/StoriesContext';
+import Error from '../components/Error';
 
 
 
@@ -70,8 +71,6 @@ export default React.memo(function CharactersView() {
   const { cards } = useParams()
   const [searchTerm, setSearchTerm] = React.useState('')
   const [isTyping, setIsTyping] = React.useState(false)
-  // const { typingText, setTypingText, apiOffset, setApiOffset, disableFirstRender, setDisableFirstRender, fetchCharacters, loading, characters, error } = React.useContext(CharactersDataContext)
-  // const { typingText, setTypingText, apiOffset, setApiOffset, disableFirstRender, setDisableFirstRender, fetchComics, loading, comics, error } = React.useContext(ComicsDataContext)
   const characterData = React.useContext(CharactersDataContext);
   const comicsData = React.useContext(ComicsDataContext);
   const eventsData = React.useContext(EventsDataContext);
@@ -86,37 +85,28 @@ export default React.memo(function CharactersView() {
     switch (cards) {
       case 'characters':
         setContextUsing(0);
-        console.log(`to no character ${cards}`)
         break;
       case 'comics':
         setContextUsing(1);
-        console.log(`to no comedias ${cards}`)
         break;
       case 'events':
         setContextUsing(2);
-        console.log(`to no comedias ${cards}`)
         break;
       case 'series':
         setContextUsing(3);
-        console.log(`to no comedias ${cards}`)
         break;
       case 'stories':
         setContextUsing(4);
-        console.log(`to no comedias ${cards}`)
         break;
-
     }
-    console.log(contextUsing)
   },[cards,contextUsing])
 
   React.useEffect(() => {
       if (!contextData[contextUsing].disableFirstRender) {
         if (searchTerm) {
           contextData[contextUsing].fetchData(contextData[contextUsing].apiOffset, searchTerm)
-          console.log("to ficando maluco cara")
         } else {
           contextData[contextUsing].fetchData(contextData[contextUsing].apiOffset);
-          console.log("to ficando maluco cara2")
         }
     }
     contextData[contextUsing].setDisableFirstRender(false)
@@ -160,6 +150,7 @@ export default React.memo(function CharactersView() {
       
       return () => clearTimeout(typingTimer)
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[contextData[contextUsing].typingText])
   
   // function handleSortIconClick(event :React.MouseEvent<HTMLButtonElement>) {
@@ -216,7 +207,7 @@ export default React.memo(function CharactersView() {
           {contextData[contextUsing].data && contextData[contextUsing].data!.map((card) => <Cards card={card} key={card.id}/>)}
         </CardsContainer>
       {(contextData[contextUsing].loading || isTyping) && <Loading/>}
-      {contextData[contextUsing].error && <Title>Error</Title>}
+      {contextData[contextUsing].error && <Error/>}
     </ViewContainer>
   )
 })

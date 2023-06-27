@@ -27,7 +27,6 @@ export default function useFetch() {
                     nameStartsWith: _name,
                     limit: 100,
                     };
-                    console.log("to aqui")
                   break;
                 default:
                   params = {
@@ -42,10 +41,8 @@ export default function useFetch() {
             
             if (!specificSearch) {
                 response = await api.get(url, { params })
-                console.log("generico")
             } else {
                 response = await api.get(url)
-                console.log("especifico")
             }
             data = response.data.data
 

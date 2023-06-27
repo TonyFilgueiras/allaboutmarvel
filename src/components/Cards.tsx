@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { NavLink, useParams } from 'react-router-dom';
 import { Card } from '../typescript/types';
+import getCardDisplayName from '../utils/GetCardDisplayName';
 
 type Props = {
     card : Card
@@ -35,16 +36,6 @@ const CardsImg = styled.img`
 export default function Cards({ card }: Props) {
   const { detail } = useParams()
   
-  function getCardDisplayName(card : Card): string {
-    if ('name' in card) {
-      return card.name;
-    } else if ('title' in card) {
-      return card.title;
-    } else {
-      return 'Unknown';
-    }
-  }
-
   return (
     <StyledCards key={card.id}>
       {detail ?

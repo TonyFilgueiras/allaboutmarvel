@@ -65,7 +65,7 @@ export interface Comics{
     events?: Lists,
 }
 export interface Creators {
-    id?: number,
+    id: number,
     firstName?: string,
     middleName?: string,
     lastName?: string,

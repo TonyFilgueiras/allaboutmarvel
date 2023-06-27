@@ -45,9 +45,7 @@ export const EventsDataProvider = ({ children }:EventsDataProps) => {
             setSearched(true)
             const json = await request("/events", title, offset)
             setData(json?.results)
-            console.log("eventos1")
         } else {
-            console.log("eventos2")
             const json = await request("/events", title, offset)
             if (!json || searched) {
                 setSearched(false)

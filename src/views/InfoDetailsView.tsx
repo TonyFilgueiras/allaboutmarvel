@@ -1,15 +1,14 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
-import CharactersDataContext from '../contexts/CharactersContext'
 import { Characters, Comics, Events, Series, Stories } from '../typescript/interfaces/apiInterfaces'
-import Title, { StyledTitle } from '../components/Title'
+import Title from '../components/Title'
 import { styled } from 'styled-components'
 import useFetch from '../hooks/UseFetch'
 import Loading from '../components/Loading'
-import NavLink from '../components/NavComponent'
-import { Links } from '../typescript/types'
 import CardsContainer from '../components/CardsContainer'
 import Cards from '../components/Cards'
+import NotFound from '../components/NotFound'
+import Error from '../components/Error'
 
 const InfoContainer = styled.div`
   margin: 0 auto;
@@ -28,7 +27,6 @@ export default function InfoInfoView() {
   React.useEffect(() => {
     if (urlParam !== detail) {
       setApiOffset(0);
-      console.log("to aqui agr")
       request(`${cards}/${id}/${detail}`, undefined, apiOffset, false)
       .then((data) => {
         setDetailCards(data?.results)
@@ -48,9 +46,9 @@ export default function InfoInfoView() {
       console.log(detailCards)
       console.log(`${cards}/${id}/${detail}`)
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, detail, apiOffset])
   
-  console.log(maxApiOffset)
   console.log(apiOffset)
   React.useEffect(() => {
     function handleScroll() {
@@ -81,8 +79,9 @@ export default function InfoInfoView() {
       <CardsContainer>
         {detailCards && detailCards.map((detail) => <Cards card={detail} key={detail.id}/>)}
       </CardsContainer>
-      {loading  && <Loading/>}
-      {error && <Title>Error</Title>}
+      {loading && <Loading />}
+      {detailCards?.length === 0 && <NotFound/>}
+      {error && <Error/>}
     </InfoContainer>
     )
   }

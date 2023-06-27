@@ -13,9 +13,9 @@ import { CharactersDataProvider } from './contexts/CharactersContext';
 import CharacterInfoView from './views/CardsInfoView';
 import InfoDetailsView from './views/InfoDetailsView';
 import { ComicsDataProvider } from './contexts/ComicsContext';
-import { EventsDataProvider } from './contexts/Events';
-import { SeriesDataProvider } from './contexts/Series';
-import { StoriesDataProvider } from './contexts/Stories';
+import { EventsDataProvider } from './contexts/EventsContext';
+import { SeriesDataProvider } from './contexts/SeriesContext';
+import { StoriesDataProvider } from './contexts/StoriesContext';
 
 
 function App() {
