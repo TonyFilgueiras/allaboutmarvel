@@ -1,4 +1,4 @@
-https://allaboumarvel.vercel.app/
+https://allaboutmarvel.vercel.app/
 # All About Marvel
 ### Projeto desenvolvido utilizando:
 
