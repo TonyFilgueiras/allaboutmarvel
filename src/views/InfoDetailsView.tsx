@@ -48,13 +48,9 @@ export default function InfoInfoView() {
 
     setUrlParam(detail)
 
-      console.log(detailCards)
-      console.log(`${cards}/${id}/${detail}`)
-
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, detail, apiOffset])
   
-  console.log(apiOffset)
   React.useEffect(() => {
     function handleScroll() {
       // Calculate the scroll position
@@ -64,7 +60,6 @@ export default function InfoInfoView() {
 
       // Check if scrolled to the bottom
       if (scrollTop + windowHeight >= documentHeight && !loading && apiOffset < maxApiOffset && maxApiOffset > 100) {
-        console.log("scrolled")
         setApiOffset(apiOffset + 100)
       }
     }

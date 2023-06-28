@@ -78,12 +78,10 @@ export default React.memo(function CharactersView() {
   const contextData = [ characterData, comicsData, eventsData, seriesData ];
   // const [isSortMenuOpened, setIsSortMenuOpened] = React.useState(false)
   // const [isAspectRatioOpened, setIsAspectRatioOpened] = React.useState(false)
-  console.log(headerLinks[0].id)
 
   const location = useLocation();
   const oleole = location.pathname.split('/')[1];
-  
-  console.log(oleole)
+
   React.useEffect(() => {
       switch (oleole) {
         case 'characters':
@@ -101,14 +99,11 @@ export default React.memo(function CharactersView() {
         default:
           setContextUsing(4)
       }
-    console.log("na teoria essa merda deveria ter mudado")
-    
-    console.log(cards)
+
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [contextUsing])
-  
-    console.log(contextUsing)
-    console.log(disableScroll)
+
     React.useEffect(() => {
       if (!contextData[contextUsing].disableFirstRender) {
         if (searchTerm) {
@@ -136,11 +131,6 @@ export default React.memo(function CharactersView() {
         const scrollTop = window.scrollY || document.documentElement.scrollTop;
         const windowHeight = window.innerHeight || document.documentElement.clientHeight;
         const documentHeight = document.documentElement.scrollHeight;
-
-        console.log(disableScroll)
-        console.log(contextUsing)
-        console.log(contextData[contextUsing].apiOffset)
-        console.log(cards)
 
         // Check if scrolled to the bottom
         if (scrollTop + windowHeight >= documentHeight && !contextData[contextUsing].typingText && !disableScroll) {

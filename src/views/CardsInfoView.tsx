@@ -135,14 +135,8 @@ export default function CharacterInfoView() {
 
   React.useEffect(() => {
     request(`${cards}/${id}`, undefined, 0, true)
-      .then((data) => 
-        {console.log(data)
-        setCardInfo(data?.results[0])}
-    )
+      .then((data) => setCardInfo(data?.results[0]))
     
-    
-    console.log(cardInfo)
-    console.log(cards)
     
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[id, detail])

@@ -36,8 +36,6 @@ export default function useFetch() {
                   };
               }
               
-
-            console.log('consultando como quem n quer nada kkkk se fode ae seu cuzao')
             
             if (!specificSearch) {
                 response = await api.get(url, { params })

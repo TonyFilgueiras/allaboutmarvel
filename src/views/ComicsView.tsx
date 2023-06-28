@@ -40,7 +40,6 @@ export default React.memo(function ComicsView() {
 
         // Check if scrolled to the bottom
         if (scrollTop + windowHeight >= documentHeight && !typingText && !loading) {
-            console.log("scroled")
           setApiOffset(apiOffset + 100)
         }
       }
