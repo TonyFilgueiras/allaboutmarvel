@@ -2,13 +2,18 @@ import React from 'react'
 import { keyframes, styled } from 'styled-components'
 import Title from './Title'
 import { device } from '../styles/Breakpoints';
+import hulk from "../img/hulk_logo.png"
+import captain_america from "../img/captain_america_logo.png"
+import thor from "../img/thor_logo.png"
+import iron_man from "../img/iron_man_logo.png"
+import black_widow from "../img/black_widow_logo.png"
 
 const LoadingContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   position: fixed;
-  padding: 20px 0 0 0;
+  padding: 10px 0 0 0;
   width: 50vw;
   left: 50vw;
   background-color: ${({theme})=> theme.colors.black};
@@ -31,6 +36,25 @@ const loadingAnimation = keyframes`
   }
 `;
 
+const logoAnimation = keyframes`
+  0% { transform: scale(0.1) rotate(0deg); }
+  25% { transform: rotate(0deg); }
+  35% { transform: rotate(5deg); }
+  45% { transform: rotate(-5deg); }
+  55% { transform: rotate(5deg); }
+  65% { transform: rotate(-5deg); }
+  75% { transform: rotate(0deg); }
+  100% { transform: scale(0.001) rotate(0deg); }
+`
+
+const LoadingLogo = styled.img`
+  width: 50px;
+  height: 50px;
+  margin-bottom: 10px;
+  transform: rotate(-360deg);
+  animation: ${logoAnimation} 2s infinite;
+`
+
 const LoadingBarContainer = styled.div`
   width: 90%;
   overflow: hidden;
@@ -43,8 +67,29 @@ const LoadingBar = styled.div`
 `;
 
 export default function Loading() {
+  const [activeIndex, setActiveIndex] = React.useState(Math.floor(Math.random() * 5));
+
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveIndex((prevIndex) => (prevIndex + 1) % activeLogo.length);
+    }, 2000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
+  const activeLogo = [
+    hulk,
+    black_widow,
+    captain_america,
+    iron_man,
+    thor,
+  ]
+
   return (
     <LoadingContainer>
+      <LoadingLogo src={activeLogo[activeIndex] } />
       <LoadingBarContainer><LoadingBar/></LoadingBarContainer>
       <Title>Loading</Title>
     </LoadingContainer>
