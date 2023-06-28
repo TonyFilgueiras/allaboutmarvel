@@ -7,12 +7,17 @@ import hulk from "../img/hulk.jpg"
 import iron_man from "../img/iron_man.jpg"
 import thor from "../img/thor.jpg"
 import {StyledTitle} from '../components/Title'
+import { device } from '../styles/Breakpoints'
 
 const ThumbnailContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   width: 100vw;
   overflow: hidden;
+
+  @media ${device.xs}{
+    grid-template-columns: 1fr 1fr 1fr;
+  }
   `
 
 const HeroThumbnail = styled.img<{ $animationDelay?: number; $isHoverDisabled?: boolean }>`
@@ -56,8 +61,13 @@ export default function HomeView() {
   return (
     <>
       <ThumbnailContainer>
+        {!device.xxl && 
         <HeroThumbnail $isHoverDisabled={isHoverDisabled} $animationDelay={.3} src={ hulk } alt="Hulk"/>
-        <HeroThumbnail $isHoverDisabled={isHoverDisabled} $animationDelay={.6} src={ black_widow } alt="Black Widow"/>
+        
+      }
+        {!device.xs && 
+        <HeroThumbnail $isHoverDisabled={isHoverDisabled} $animationDelay={.6} src={ black_widow } alt="Black Widow"/>        
+      }
         <HeroThumbnail $isHoverDisabled={isHoverDisabled} $animationDelay={.9} src={ captain_america } alt="Captain America"/>
         <HeroThumbnail $isHoverDisabled={isHoverDisabled} $animationDelay={1.2} src={ iron_man } alt="Iron Man"/>
         <HeroThumbnail $isHoverDisabled={isHoverDisabled} $animationDelay={1.5} src={ thor } alt="Thor"/>

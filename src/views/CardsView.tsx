@@ -10,14 +10,13 @@ import CardsContainer from '../components/CardsContainer'
 import Cards from '../components/Cards'
 import CharactersDataContext from '../contexts/CharactersContext'
 import Title from '../components/Title';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import ComicsDataContext from '../contexts/ComicsContext';
 import EventsDataContext from '../contexts/EventsContext';
 import SeriesDataContext from '../contexts/SeriesContext';
 import StoriesDataContext from '../contexts/StoriesContext';
 import Error from '../components/Error';
-
-
+import { headerLinks } from '../utils/HeaderLinks';
 
 const ViewContainer = styled.div`
   width: 70vw;
@@ -68,45 +67,64 @@ const StyledIconButton = styled.button`
 
 export default React.memo(function CharactersView() {
   const { toggleBox } = React.useContext(MethodNotImplementedContext)
+  const [contextUsing, setContextUsing] = React.useState<number>(0)
   const { cards } = useParams()
   const [searchTerm, setSearchTerm] = React.useState('')
   const [isTyping, setIsTyping] = React.useState(false)
+  const [disableScroll, setDisableScroll] = React.useState(false)
   const characterData = React.useContext(CharactersDataContext);
   const comicsData = React.useContext(ComicsDataContext);
   const eventsData = React.useContext(EventsDataContext);
   const seriesData = React.useContext(SeriesDataContext);
   const storiesData = React.useContext(StoriesDataContext);
-  const [contextUsing, setContextUsing] = React.useState<number>(0)
   const contextData = [ characterData, comicsData, eventsData, seriesData, storiesData ];
   // const [isSortMenuOpened, setIsSortMenuOpened] = React.useState(false)
   // const [isAspectRatioOpened, setIsAspectRatioOpened] = React.useState(false)
+  console.log(headerLinks[0].id)
 
+  const location = useLocation();
+  const oleole = location.pathname.split('/')[1];
+  
+  console.log(oleole)
   React.useEffect(() => {
-    switch (cards) {
-      case 'characters':
-        setContextUsing(0);
-        break;
-      case 'comics':
-        setContextUsing(1);
-        break;
-      case 'events':
-        setContextUsing(2);
-        break;
-      case 'series':
-        setContextUsing(3);
-        break;
-      case 'stories':
-        setContextUsing(4);
-        break;
-    }
-  },[cards,contextUsing])
-
-  React.useEffect(() => {
+      switch (oleole) {
+        case 'characters':
+          setContextUsing(0);
+          break;
+        case 'comics':
+          setContextUsing(1);
+          break;
+        case 'events':
+          setContextUsing(2);
+          break;
+        case 'series':
+          setContextUsing(3);
+          break;
+        case 'stories':
+          setContextUsing(4);
+          break;
+        default:
+          setContextUsing(4)
+      }
+    console.log("na teoria essa merda deveria ter mudado")
+    
+    console.log(cards)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [contextUsing])
+  
+    console.log(contextUsing)
+    console.log(disableScroll)
+    React.useEffect(() => {
       if (!contextData[contextUsing].disableFirstRender) {
         if (searchTerm) {
+          setDisableScroll(true)
           contextData[contextUsing].fetchData(contextData[contextUsing].apiOffset, searchTerm)
+          setDisableScroll(false)
+          
         } else {
+          setDisableScroll(true)
           contextData[contextUsing].fetchData(contextData[contextUsing].apiOffset);
+          setDisableScroll(false)
         }
     }
     contextData[contextUsing].setDisableFirstRender(false)
@@ -124,8 +142,14 @@ export default React.memo(function CharactersView() {
         const windowHeight = window.innerHeight || document.documentElement.clientHeight;
         const documentHeight = document.documentElement.scrollHeight;
 
+        console.log(disableScroll)
+        console.log(contextUsing)
+        console.log(contextData[contextUsing].apiOffset)
+        console.log(cards)
+
         // Check if scrolled to the bottom
-        if (scrollTop + windowHeight >= documentHeight && !contextData[contextUsing].typingText && !contextData[contextUsing].loading) {
+        if (scrollTop + windowHeight >= documentHeight && !contextData[contextUsing].typingText && !disableScroll) {
+          setDisableScroll(true)
           contextData[contextUsing].setApiOffset(contextData[contextUsing].apiOffset + 100)
         }
       }
@@ -206,7 +230,7 @@ export default React.memo(function CharactersView() {
         <CardsContainer>
           {contextData[contextUsing].data && contextData[contextUsing].data!.map((card) => <Cards card={card} key={card.id}/>)}
         </CardsContainer>
-      {(contextData[contextUsing].loading || isTyping) && <Loading/>}
+      {(contextData[contextUsing].loading || isTyping || disableScroll) && <Loading/>}
       {contextData[contextUsing].error && <Error/>}
     </ViewContainer>
   )
