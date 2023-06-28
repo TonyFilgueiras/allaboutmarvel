@@ -71,7 +71,7 @@ export default React.memo(function ComicsView() {
     <CardsViewContainer>
       <Title>Series</Title>
       <Input value={typingText} type='text' placeholder='Search for Character' onChange={(event) => setTypingText(event.target.value)} />
-      <OptionsContainer/>
+      {/* <OptionsContainer/> */}
         <CardsContainer>
           {data && data!.map((card) => <Cards card={card} key={card.id}/>)}
         </CardsContainer>

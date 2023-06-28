@@ -10,6 +10,7 @@ type Props = {
 
 const StyledInput = styled.input`
   padding: 10px 20px;
+  margin-bottom: 20px;
   width: calc(100% - 40px);
 `
 
