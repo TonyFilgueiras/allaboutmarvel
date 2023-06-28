@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react'
 import styled from 'styled-components'
+import { device } from '../styles/Breakpoints'
 
 type Props = {
     children?: ReactNode
@@ -9,9 +10,13 @@ const StyledCardsContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(6, minmax(50px, 1fr));
   grid-gap: 5px;
-  /* justify-content: space-between; */
   margin-bottom: 40px;
-  /* border: 1px solid lime; */
+  @media ${device.lg}{
+    grid-template-columns: repeat(4, minmax(50px, 1fr));
+  }
+  @media ${device.md}{
+    grid-template-columns: repeat(4, minmax(50px, 1fr));
+  }
   `
 
 

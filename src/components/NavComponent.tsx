@@ -30,7 +30,6 @@ export const Styledul = styled.ul<{ $activeLink?: boolean }>`
 
     @media ${device.xs}{
         font-size: 0.8em;
-        border: 1px solid lime;
     }
 `
 const Styledli = styled.li`

@@ -14,7 +14,6 @@ import { useLocation, useParams } from 'react-router-dom';
 import ComicsDataContext from '../contexts/ComicsContext';
 import EventsDataContext from '../contexts/EventsContext';
 import SeriesDataContext from '../contexts/SeriesContext';
-import StoriesDataContext from '../contexts/StoriesContext';
 import Error from '../components/Error';
 import { headerLinks } from '../utils/HeaderLinks';
 
@@ -76,8 +75,7 @@ export default React.memo(function CharactersView() {
   const comicsData = React.useContext(ComicsDataContext);
   const eventsData = React.useContext(EventsDataContext);
   const seriesData = React.useContext(SeriesDataContext);
-  const storiesData = React.useContext(StoriesDataContext);
-  const contextData = [ characterData, comicsData, eventsData, seriesData, storiesData ];
+  const contextData = [ characterData, comicsData, eventsData, seriesData ];
   // const [isSortMenuOpened, setIsSortMenuOpened] = React.useState(false)
   // const [isAspectRatioOpened, setIsAspectRatioOpened] = React.useState(false)
   console.log(headerLinks[0].id)
@@ -99,9 +97,6 @@ export default React.memo(function CharactersView() {
           break;
         case 'series':
           setContextUsing(3);
-          break;
-        case 'stories':
-          setContextUsing(4);
           break;
         default:
           setContextUsing(4)

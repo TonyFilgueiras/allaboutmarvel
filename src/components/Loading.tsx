@@ -1,6 +1,7 @@
 import React from 'react'
 import { keyframes, styled } from 'styled-components'
 import Title from './Title'
+import { device } from '../styles/Breakpoints';
 
 const LoadingContainer = styled.div`
   display: flex;
@@ -15,6 +16,9 @@ const LoadingContainer = styled.div`
   transform: translate(-50%);
   border-radius: 5px;
   box-shadow: 0 1px 10px 0px #00000081;
+  @media ${device.sm}{
+    width: 70vw;
+  }
 `
 
 // Define the animation keyframe

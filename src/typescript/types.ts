@@ -1,4 +1,4 @@
-import { Characters, Comics, Events, Series, Stories } from "./interfaces/apiInterfaces"
+import { Characters, Comics, Events, Series } from "./interfaces/apiInterfaces"
 
 export type Urls = {
     type?: string,
@@ -38,4 +38,4 @@ export type Links = {
     text: string,
 }
 
-export type Card = Characters | Comics | Events | Series | Stories
+export type Card = Characters | Comics | Events | Series

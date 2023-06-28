@@ -1,5 +1,4 @@
 import React from 'react'
-import styled from 'styled-components'
 import Input from '../components/Input'
 import Loading from '../components/Loading'
 import CardsContainer from '../components/CardsContainer'
@@ -8,12 +7,7 @@ import Title from '../components/Title';
 import Error from '../components/Error';
 import ComicsDataContext from '../contexts/ComicsContext';
 import OptionsContainer from '../components/OptionsContainer'
-
-const ViewContainer = styled.div`
-  width: 70vw;
-  margin: 0 auto;
-  text-align: center;
-`
+import CardsViewContainer from '../components/CardsViewContainer'
 
 export default React.memo(function ComicsView() {
   const [searchTerm, setSearchTerm] = React.useState('')
@@ -75,7 +69,7 @@ export default React.memo(function ComicsView() {
   },[typingText])
 
   return (
-    <ViewContainer>
+    <CardsViewContainer>
       <Title>Comics</Title>
       <Input value={typingText} type='text' placeholder='Search for Character' onChange={(event) => setTypingText(event.target.value)} />
       <OptionsContainer/>
@@ -84,6 +78,6 @@ export default React.memo(function ComicsView() {
         </CardsContainer>
       {(loading || isTyping) && <Loading/>}
       {error && <Error/>}
-    </ViewContainer>
+    </CardsViewContainer>
   )
 })

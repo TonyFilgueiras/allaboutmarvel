@@ -15,12 +15,10 @@ import InfoDetailsView from './views/InfoDetailsView';
 import { ComicsDataProvider } from './contexts/ComicsContext';
 import { EventsDataProvider } from './contexts/EventsContext';
 import { SeriesDataProvider } from './contexts/SeriesContext';
-import { StoriesDataProvider } from './contexts/StoriesContext';
 import CharactersView from './views/CharactersView';
 import ComicsView from './views/ComicsView';
 import EventsView from './views/EventsView';
 import SeriesView from './views/SeriesView';
-import StoriesView from './views/StoriesView';
 
 
 function App() {
@@ -31,7 +29,6 @@ function App() {
         <Header/>
         <EventsDataProvider>
         <SeriesDataProvider>
-        <StoriesDataProvider>
         <ComicsDataProvider>
         <CharactersDataProvider>
           <Routes>
@@ -41,7 +38,6 @@ function App() {
             <Route path="/comics" element={<ComicsView/>}/>
             <Route path="/events" element={<EventsView/>}/>
             <Route path="/series" element={<SeriesView/>}/>
-            <Route path="/stories" element={<StoriesView/>}/>
             <Route path="/:cards/:id" element={<CardsInfoView />}>
               <Route path=":detail" element={<InfoDetailsView/>}/>             
             </Route>
@@ -49,7 +45,6 @@ function App() {
           </Routes>
         </CharactersDataProvider>
         </ComicsDataProvider>
-        </StoriesDataProvider>
         </SeriesDataProvider>
         </EventsDataProvider>
       <Footer/>

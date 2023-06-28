@@ -23,6 +23,7 @@ const GlobalStyle = createGlobalStyle`
     background-color: ${({theme}) => theme.colors.black};
     color: white;
     text-align: center;
+    overflow-x: hidden;
   }
   a{
     color: white;

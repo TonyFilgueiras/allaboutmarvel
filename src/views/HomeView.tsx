@@ -8,6 +8,7 @@ import iron_man from "../img/iron_man.jpg"
 import thor from "../img/thor.jpg"
 import {StyledTitle} from '../components/Title'
 import { device } from '../styles/Breakpoints'
+import useScreenWidth from '../hooks/UseScreenWidth'
 
 const ThumbnailContainer = styled.div`
   display: grid;
@@ -15,8 +16,9 @@ const ThumbnailContainer = styled.div`
   width: 100vw;
   overflow: hidden;
 
-  @media ${device.xs}{
+  @media ${device.sm}{
     grid-template-columns: 1fr 1fr 1fr;
+    border: 1px solid lime;
   }
   `
 
@@ -40,16 +42,15 @@ const HeroThumbnail = styled.img<{ $animationDelay?: number; $isHoverDisabled?: 
 `;
 
 const HomeTitle = styled(StyledTitle)<{ $animationDelay?: number; $isHoverDisabled?: boolean }>`
-  position: absolute!important;
-  bottom: 25vh;
-  transform: translateX(-50%);
-  left: 50%;
   animation-delay: ${props => props.$animationDelay}s;
+
 
 `
 
 export default function HomeView() {
   const [isHoverDisabled, setIsHoverDisabled] = React.useState(true);
+  const belowMaxWidth = useScreenWidth(600)
+
 
   React.useEffect(() => {
     setTimeout(() => {
@@ -61,16 +62,16 @@ export default function HomeView() {
   return (
     <>
       <ThumbnailContainer>
-        {!device.xxl && 
+        {!belowMaxWidth && 
         <HeroThumbnail $isHoverDisabled={isHoverDisabled} $animationDelay={.3} src={ hulk } alt="Hulk"/>
         
       }
-        {!device.xs && 
+        
         <HeroThumbnail $isHoverDisabled={isHoverDisabled} $animationDelay={.6} src={ black_widow } alt="Black Widow"/>        
-      }
+      
         <HeroThumbnail $isHoverDisabled={isHoverDisabled} $animationDelay={.9} src={ captain_america } alt="Captain America"/>
         <HeroThumbnail $isHoverDisabled={isHoverDisabled} $animationDelay={1.2} src={ iron_man } alt="Iron Man"/>
-        <HeroThumbnail $isHoverDisabled={isHoverDisabled} $animationDelay={1.5} src={ thor } alt="Thor"/>
+        {!belowMaxWidth && <HeroThumbnail $isHoverDisabled={isHoverDisabled} $animationDelay={1.5} src={ thor } alt="Thor"/>}
 
       </ThumbnailContainer>
       <HomeTitle $animationDelay={2}>All about the Marvel universe</HomeTitle>

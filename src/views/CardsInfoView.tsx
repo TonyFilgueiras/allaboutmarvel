@@ -11,13 +11,18 @@ import { Links } from '../typescript/types'
 // import ComicsDataContext from '../contexts/ComicsContext'
 // import EventsDataContext from '../contexts/EventsContext'
 // import SeriesDataContext from '../contexts/SeriesContext'
-// import StoriesDataContext from '../contexts/StoriesContext'
 import getCardDisplayName from '../utils/GetCardDisplayName'
 import Error from '../components/Error'
+import { device } from '../styles/Breakpoints'
+import useScreenWidth from '../hooks/UseScreenWidth'
 
 const InfoContainer = styled.div`
   margin: 0 auto;
   width: 70vw;
+  @media ${device.sm}{
+    width: 100vw;
+    overflow-x: hidden;
+  }
 `
 
 const InfoThumbnail = styled.img`
@@ -42,15 +47,21 @@ const LabelContainer = styled.div`
   li {
     padding: 25px 0;
   }
+  @media ${device.sm}{
+    margin-bottom: 20px;
+  }
 `
 
 const UrlContainer = styled.ul`
   margin-top: 20px;
   li {
     display: grid;
-    grid-template-columns: 15% 85%;
+    grid-template-columns: 15% auto;
     margin-top: 5px;
     text-align: start;
+    @media ${device.sm}{
+      grid-template-columns: 25% auto;
+    }
 }
   a {
     color: ${({ theme }) => theme.colors.cyan};
@@ -69,8 +80,11 @@ const UrlType = styled.label`
 
 const DescriptionContainer = styled.div`
   display: grid;
-  grid-template-columns: 15% 85%;
+  grid-template-columns: 25% auto;
   align-items: center;
+  @media ${device.md}{
+    grid-template-columns: auto ;
+  }
 `
 
 export default function CharacterInfoView() {
@@ -80,17 +94,26 @@ export default function CharacterInfoView() {
   // const comicsData = React.useContext(ComicsDataContext);
   // const eventsData = React.useContext(EventsDataContext);
   // const seriesData = React.useContext(SeriesDataContext);
-  // const storiesData = React.useContext(StoriesDataContext);
   const [contextUsing, setContextUsing] = React.useState<number>(0)
-  // const contextData = [ characterData, comicsData, eventsData, seriesData, storiesData ];
+  // const contextData = [ characterData, comicsData, eventsData, seriesData ];
   const { loading, error, request } = useFetch()
-  const characterLinks: Links[] = [
+  const [imgText, setImgText] = React.useState('landscape_medium')
+  const below600 = useScreenWidth(600)
+  const infoLinks: Links[] = [
     {id: 1, text: 'Characters', url: `characters`},
     {id: 2, text: 'Comics', url: `comics`},
     {id: 3, text: 'Events', url: `events`},
     {id: 4, text: 'Series', url :`series` },
-    {id: 5, text: 'Stories', url: `stories` },
-  ] 
+  ]   
+
+  React.useEffect(() => {
+    if (below600) {
+      setImgText('landscape_medium')
+    } else {
+      setImgText('landscape_xlarge')
+    }
+  },[below600])
+
 
   React.useEffect(() => {
     switch (cards) {
@@ -105,9 +128,6 @@ export default function CharacterInfoView() {
         break;
       case 'series':
         setContextUsing(3);
-        break;
-      case 'stories':
-        setContextUsing(4);
         break;
     }
     
@@ -134,7 +154,7 @@ export default function CharacterInfoView() {
       
       }
       {cardInfo?.thumbnail &&
-        <InfoThumbnail src={`${cardInfo?.thumbnail?.path}/landscape_xlarge	.${cardInfo?.thumbnail?.extension}`} alt="" />
+        <InfoThumbnail src={`${cardInfo?.thumbnail?.path}/${imgText}.${cardInfo?.thumbnail?.extension}`} alt="" />
       }
       <label>{cardInfo?.modified }</label>
       <UrlContainer>{cardInfo?.urls?.map((url) => 
@@ -148,7 +168,7 @@ export default function CharacterInfoView() {
         <label>{cardInfo?.description }</label>
       </DescriptionContainer>}
       <LabelContainer>
-        <NavComponent active={true} links={characterLinks.filter((item) => {
+        <NavComponent active={true} links={infoLinks.filter((item) => {
           if (cards === "comics") {
             return (item.url !== cards && item.url !== "series")           
           } else {

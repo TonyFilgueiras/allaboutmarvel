@@ -1,6 +1,6 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
-import { Characters, Comics, Events, Series, Stories } from '../typescript/interfaces/apiInterfaces'
+import { Characters, Comics, Events, Series } from '../typescript/interfaces/apiInterfaces'
 import Title from '../components/Title'
 import { styled } from 'styled-components'
 import useFetch from '../hooks/UseFetch'
@@ -9,14 +9,19 @@ import CardsContainer from '../components/CardsContainer'
 import Cards from '../components/Cards'
 import NotFound from '../components/NotFound'
 import Error from '../components/Error'
+import { device } from '../styles/Breakpoints'
 
 const InfoContainer = styled.div`
   margin: 0 auto;
   width: 70vw;
+  @media ${device.sm} {
+    width: 100vw;
+    
+  }
 `
 
 export default function InfoInfoView() {
-  type DataType = Characters[] | Comics[] | Events[] | Series[] | Stories[];
+  type DataType = Characters[] | Comics[] | Events[] | Series[] ;
   const { cards, id, detail } = useParams()
   const [detailCards, setDetailCards] = React.useState<DataType>()
   const [apiOffset, setApiOffset] = React.useState(0)

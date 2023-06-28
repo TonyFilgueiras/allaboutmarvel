@@ -18,9 +18,9 @@ const StyledHeader = styled.header`
     font-weight: bold;
     @media ${device.sm}{
         flex-direction: column;
-        font-size: 0.7;
+        font-size: 1em;
     } @media ${device.xxs}{
-        font-size: 0.6em;
+        font-size: 0.9em;
     }
 `
 
