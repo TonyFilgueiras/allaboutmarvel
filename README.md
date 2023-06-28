@@ -16,15 +16,18 @@ https://allaboutmarvel.vercel.app/
 - Versão 1.0
 - Ultima modificação Jun/23
 
-![preview1](https://github.com/TonyFilgueiras/marvel_project/assets/101405712/adc54749-2c4d-460f-b42f-46f5fbe89b0c)
-![preview2](https://github.com/TonyFilgueiras/marvel_project/assets/101405712/92f478e5-4c8d-41dd-a0a2-4d791bd3cd98)
+![preview1](https://github.com/TonyFilgueiras/allaboutmarvel/assets/101405712/767a01a6-cc99-4214-a94a-832f5d9a9cb1)
+![preview2](https://github.com/TonyFilgueiras/allaboutmarvel/assets/101405712/1bae639e-dd41-4ec9-9acc-b021db587c25)
+
+
 
 
 ### Para realizar seu projeto:
 
 - Crie sua conta no [site da marvel](https://developer.marvel.com/)
 - [pegue sua chave](https://developer.marvel.com/account) de api publica e privada
-![preview3](https://github.com/TonyFilgueiras/marvel_project/assets/101405712/c81965db-29fa-485a-a9b5-af382b547193)
+![preview3](https://github.com/TonyFilgueiras/allaboutmarvel/assets/101405712/f202a501-f78f-4bd9-96af-6d8accfe0b90)
+
 - Gerar _timestamp_ e _hash_ para realizar as chamadas na api utilizando _axios_
   #### timestamp
   `const ts = Number(new Date());`
