@@ -1,4 +1,4 @@
-https://allaboutmarvel-kpq4v6wq3-tonyfilgueiras.vercel.app/
+https://allaboutmarvel.vercel.app/
 # All About Marvel
 ### Projeto desenvolvido utilizando:
 
