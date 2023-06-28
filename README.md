@@ -20,4 +20,28 @@
 ![preview2](https://github.com/TonyFilgueiras/marvel_project/assets/101405712/92f478e5-4c8d-41dd-a0a2-4d791bd3cd98)
 
 
+### Para realizar seu projeto:
+
+- Crie sua conta no [site da marvel](https://developer.marvel.com/)
+- [pegue sua chave](https://developer.marvel.com/account) de api publica e privada
+![preview3](https://github.com/TonyFilgueiras/marvel_project/assets/101405712/c81965db-29fa-485a-a9b5-af382b547193)
+- Gerar _timestamp_ e _hash_ para realizar as chamadas na api utilizando _axios_
+  #### timestamp
+  `const ts = Number(new Date());`
+  #### hash
+  `const hash = md5(timestamp + {sua_chave_privada} + {sua_chave_publica})`
+  #### axios
+  `axios.create({
+    baseURL: https://gateway.marvel.com:443/v1/public/, 
+    params: {
+        ts: {sua_timesctamp},
+        apikey: {sua_chave_publica},
+        hash: {sua_hash},
+        },
+})`
+
+
+ - Para mais informações https://developer.marvel.com/documentation/authorization
+
+
 ## Data provided by Marvel. © 2014 Marvel
