@@ -8,6 +8,7 @@ import Error from '../components/Error';
 import SeriesDataContext from '../contexts/SeriesContext';
 import OptionsContainer from '../components/OptionsContainer'
 import CardsViewContainer from '../components/CardsViewContainer'
+import NotFound from '../components/NotFound'
 
 export default React.memo(function ComicsView() {
   const [searchTerm, setSearchTerm] = React.useState('')
@@ -74,7 +75,8 @@ export default React.memo(function ComicsView() {
       {/* <OptionsContainer/> */}
         <CardsContainer>
           {data && data!.map((card) => <Cards card={card} key={card.id}/>)}
-        </CardsContainer>
+      </CardsContainer>
+      {data?.length === 0 && <NotFound/>}
       {(loading || isTyping) && <Loading/>}
       {error && <Error/>}
     </CardsViewContainer>
